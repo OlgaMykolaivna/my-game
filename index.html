@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Весела музична фізкультхвилинка</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Nunito', 'Comic Sans MS', sans-serif;
+            background: linear-gradient(180deg, #74EBD5 0%, #9FACE6 50%, #A8E063 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Декоративні хмаринки */
+        .cloud {
+            position: absolute;
+            font-size: 4rem;
+            opacity: 0.7;
+            animation: floatCloud 25s linear infinite;
+            z-index: 1;
+        }
+        .cloud:nth-child(1) { top: 8%; left: -10%; animation-duration: 30s; }
+        .cloud:nth-child(2) { top: 20%; left: -15%; animation-duration: 22s; font-size: 5rem; }
+
+        @keyframes floatCloud {
+            from { transform: translateX(-10vw); }
+            to { transform: translateX(110vw); }
+        }
+
+        /* Головний контейнер */
+        .game-container {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 35px;
+            padding: 25px 30px;
+            width: 92%;
+            max-width: 650px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 0 0 8px rgba(255, 255, 255, 0.4);
+            text-align: center;
+            z-index: 10;
+            position: relative;
+        }
+
+        h1 {
+            color: #FF6B6B;
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 0px #FFE66D;
+        }
+
+        /* Верхня панель: Таймер та Звук */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 0 10px;
+        }
+
+        .timer-box {
+            background: #FFE66D;
+            color: #2F3640;
+            font-size: 1.8rem;
+            font-weight: 900;
+            padding: 8px 22px;
+            border-radius: 50px;
+            border: 4px solid #F7B731;
+            box-shadow: 0 4px 10px rgba(247, 183, 49, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .timer-urgent {
+            background: #FF6B6B;
+            color: white;
+            border-color: #EE5253;
+            animation: pulse 0.5s infinite alternate;
+        }
+
+        .sound-btn {
+            background: #4ECDC4;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #26A69A;
+            transition: transform 0.1s;
+        }
+
+        .sound-btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        /* Хмаринка з текстом тренера */
+        .speech-bubble {
+            background: #E0F7FA;
+            border: 3px solid #4DD0E1;
+            border-radius: 25px;
+            padding: 15px 20px;
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #006064;
+            min-height: 75px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 15px 15px 0;
+            border-style: solid;
+            border-color: #4DD0E1 transparent transparent transparent;
+        }
+
+        /* Сцена з персонажем */
+        .stage {
+            height: 210px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin: 10px 0;
+        }
+
+        .character {
+            font-size: 8.5rem;
+            line-height: 1;
+            filter: drop-shadow(0 12px 10px rgba(0,0,0,0.15));
+            transition: transform 0.3s ease;
+            transform-origin: bottom center;
+        }
+
+        .shadow {
+            width: 110px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 50%;
+            margin-top: -10px;
+            transition: all 0.3s ease;
+        }
+
+        /* Анімації для вправ */
+        .idle-anim {
+            animation: breathe 2s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* 1. Стрибки */
+        .jump-anim {
+            animation: bunnyJump 0.6s ease-in-out infinite;
+        }
+        .jump-shadow {
+            animation: shadowJump 0.6s ease-in-out infinite;
+        }
+
+        @keyframes bunnyJump {
+            0%, 100% { transform: translateY(0) scale(1.08, 0.92); }
+            50% { transform: translateY(-65px) scale(0.95, 1.08); }
+        }
+        @keyframes shadowJump {
+            0%, 100% { transform: scale(1.1); opacity: 0.2; }
+            50% { transform: scale(0.5); opacity: 0.08; }
+        }
+
+        /* 2. Обертання (Млин) */
+        .spin-anim {
+            animation: windmillSpin 1.4s linear infinite;
+            transform-origin: center center;
+        }
+
+        @keyframes windmillSpin {
+            0% { transform: rotate(0deg) scale(1.05); }
+            50% { transform: rotate(180deg) scale(1.15); }
+            100% { transform: rotate(360deg) scale(1.05); }
+        }
+
+        /* 3. Потягування до сонечка */
+        .stretch-anim {
+            animation: sunStretch 1.8s ease-in-out infinite;
+        }
+
+        @keyframes sunStretch {
+            0%, 100% { transform: scale(1, 1) translateY(0); }
+            50% { transform: scale(0.88, 1.25) translateY(-20px); }
+        }
+
+        /* Святкування */
+        .celebrate-anim {
+            animation: celebrateDance 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes celebrateDance {
+            from { transform: rotate(-12deg) scale(1.1); }
+            to { transform: rotate(12deg) scale(1.1); }
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.08); }
+        }
+
+        /* Кнопки вибору вправ */
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        @media (min-width: 550px) {
+            .controls {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .exercise-btn {
+            border: none;
+            border-radius: 20px;
+            padding: 14px 10px;
+            font-family: inherit;
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: white;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .exercise-btn span.emoji {
+            font-size: 2rem;
+        }
+
+        .btn-jump {
+            background: #FF6B6B;
+            box-shadow: 0 6px 0 #EE5253;
+        }
+        .btn-spin {
+            background: #48DBFB;
+            color: #1e272e;
+            box-shadow: 0 6px 0 #0ABDE3;
+        }
+        .btn-stretch {
+            background: #FECA57;
+            color: #1e272e;
+            box-shadow: 0 6px 0 #FF9F43;
+        }
+
+        .exercise-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            filter: brightness(1.05);
+        }
+
+        .exercise-btn:active:not(:disabled) {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        .exercise-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .active-btn {
+            outline: 4px solid #2F3640;
+            transform: scale(1.03) !important;
+            opacity: 1 !important;
+        }
+
+        /* Полотно для салютів */
+        #fireworksCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 20;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cloud">☁️</div>
+    <div class="cloud">☁️</div>
+
+    <canvas id="fireworksCanvas"></canvas>
+
+    <div class="game-container">
+        <h1>🎵 Весела фізкультхвилинка!</h1>
+
+        <div class="top-bar">
+            <div class="timer-box" id="timerBox">
+                ⏱️ <span id="timerText">20</span> с
+            </div>
+            <button class="sound-btn" id="soundToggle" title="Увімкнути/вимкнути звук">🔊</button>
+        </div>
+
+        <div class="speech-bubble" id="speechBubble">
+            Привіт! Я Ведмедик-тренер! 🐻 Обери вправу, щоб розім'ятися!
+        </div>
+
+        <div class="stage">
+            <div class="character idle-anim" id="character">🐻</div>
+            <div class="shadow" id="shadow"></div>
+        </div>
+
+        <div class="controls">
+            <button class="exercise-btn btn-jump" id="btnJump" onclick="startExercise('jump')">
+                <span class="emoji">🐰</span>
+                Пострибай як зайчик
+            </button>
+            <button class="exercise-btn btn-spin" id="btnSpin" onclick="startExercise('spin')">
+                <span class="emoji">🌀</span>
+                Покрутися як млин
+            </button>
+            <button class="exercise-btn btn-stretch" id="btnStretch" onclick="startExercise('stretch')">
+                <span class="emoji">☀️</span>
+                Потягнися до сонечка
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Елементи інтерфейсу
+        const timerText = document.getElementById('timerText');
+        const timerBox = document.getElementById('timerBox');
+        const speechBubble = document.getElementById('speechBubble');
+        const character = document.getElementById('character');
+        const shadow = document.getElementById('shadow');
+        const soundToggle = document.getElementById('soundToggle');
+
+        const buttons = {
+            jump: document.getElementById('btnJump'),
+            spin: document.getElementById('btnSpin'),
+            stretch: document.getElementById('btnStretch')
+        };
+
+        // Стан гри
+        let timeLeft = 20;
+        let timerInterval = null;
+        let musicInterval = null;
+        let isRunning = false;
+        let isSoundOn = true;
+        let audioCtx = null;
+
+        // Тексти підбадьорення для кожної вправи
+        const exercisesData = {
+            jump: {
+                animClass: 'jump-anim',
+                shadowClass: 'jump-shadow',
+                phrases: [
+                    "Стриб-скок! Вище, як веселий зайчик! 🐰",
+                    "Молодець! Тримай ритм: стриб-стриб! 🥕",
+                    "Супер! П'яточки відриваємо від підлоги! ✨",
+                    "Ще трішки! Ти справжній чемпіон зі стрибків! 🏆"
+                ]
+            },
+            spin: {
+                animClass: 'spin-anim',
+                shadowClass: '',
+                phrases: [
+                    "Ручки в сторони! Крутимося як вітрячок! 🌀",
+                    "Вжух-вжух! Обережно, не закрути голову! 😊",
+                    "Чудово виходить! Справжній млин працює! 🌾",
+                    "Останні оберти! Ти неймовірно вправний! 🌟"
+                ]
+            },
+            stretch: {
+                animClass: 'stretch-anim',
+                shadowClass: '',
+                phrases: [
+                    "Тягнемо ручки високо-високо до сонечка! ☀️",
+                    "Стаємо на носочки! Дістаємо до хмаринок! ☁️",
+                    "Глибокий вдих і тягнемося ще вище! 🌈",
+                    "Відчуваєш, як виросла спинка? Молодець! 💪"
+                ]
+            }
+        };
+
+        const praisePhrases = [
+            "УРА! Ти супер-молодець! Чудова розминка! 🎉",
+            "Браво! Справжній спортсмен! Так тримати! 🏅",
+            "Фантастика! Заряд бадьорості отримано! 🌟"
+        ];
+
+        // Керування звуком
+        soundToggle.addEventListener('click', () => {
+            isSoundOn = !isSoundOn;
+            soundToggle.textContent = isSoundOn ? '🔊' : '🔇';
+            if (!isSoundOn && musicInterval) {
+                clearInterval(musicInterval);
+            }
+        });
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        // Відтворення однієї ноти
+        function playTone(freq, duration, type = 'triangle', volume = 0.15) {
+            if (!isSoundOn) return;
+            initAudio();
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+            gain.gain.setValueAtTime(volume, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        }
+
+        // Весела фонова мелодія під час вправи
+        function startBackgroundMusic() {
+            const melody = [523.25, 659.25, 783.99, 659.25, 587.33, 698.46, 880.00, 783.99]; // До-Мі-Соль-Мі-Ре-Фа-Ля-Соль
+            let noteIndex = 0;
+
+            musicInterval = setInterval(() => {
+                if (isRunning && isSoundOn) {
+                    playTone(melody[noteIndex], 0.25, 'sine', 0.12);
+                    noteIndex = (noteIndex + 1) % melody.length;
+                }
+            }, 350);
+        }
+
+        // Похвальний саунд-ефект (фанфари)
+        function playVictoryFanfare() {
+            if (!isSoundOn) return;
+            const notes = [
+                { freq: 523.25, delay: 0, dur: 0.15 },    // До
+                { freq: 659.25, delay: 150, dur: 0.15 },  // Мі
+                { freq: 783.99, delay: 300, dur: 0.15 },  // Соль
+                { freq: 1046.50, delay: 450, dur: 0.6 }   // До високе
+            ];
+
+            notes.forEach(n => {
+                setTimeout(() => playTone(n.freq, n.dur, 'triangle', 0.25), n.delay);
+            });
+        }
+
+        // Запуск обраної вправи
+        function startExercise(type) {
+            if (isRunning) return;
+            initAudio();
+            isRunning = true;
+            timeLeft = 20;
+
+            // Оновлення таймера
+            timerText.textContent = timeLeft;
+            timerBox.classList.remove('timer-urgent');
+
+            // Блокування інших кнопок та підсвічування активної
+            Object.keys(buttons).forEach(key => {
+                buttons[key].disabled = true;
+                buttons[key].classList.remove('active-btn');
+            });
+            buttons[type].classList.add('active-btn');
+
+            // Налаштування анімації персонажа
+            const exercise = exercisesData[type];
+            character.className = 'character ' + exercise.animClass;
+            shadow.className = 'shadow ' + exercise.shadowClass;
+
+            // Перша фраза підтримки
+            speechBubble.textContent = exercise.phrases[0];
+
+            // Старт музики
+            startBackgroundMusic();
+
+            // Таймер зворотного відліку
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerText.textContent = timeLeft;
+
+                // Зміна підбадьорюючих фраз кожні 5 секунд
+                if (timeLeft === 15) speechBubble.textContent = exercise.phrases[1];
+                if (timeLeft === 10) speechBubble.textContent = exercise.phrases[2];
+                if (timeLeft === 5) {
+                    speechBubble.textContent = exercise.phrases[3];
+                    timerBox.classList.add('timer-urgent');
+                }
+
+                // Звуковий сигнал на останні 3 секунди
+                if (timeLeft <= 3 && timeLeft > 0) {
+                    playTone(880, 0.1, 'sine', 0.15);
+                }
+
+                // Завершення вправи
+                if (timeLeft <= 0) {
+                    finishExercise();
+                }
+            }, 1000);
+        }
+
+        // Завершення вправи та салют
+        function finishExercise() {
+            clearInterval(timerInterval);
+            clearInterval(musicInterval);
+            isRunning = false;
+
+            timerBox.classList.remove('timer-urgent');
+
+            // Святкова анімація персонажа
+            character.className = 'character celebrate-anim';
+            shadow.className = 'shadow';
+
+            // Випадкова похвала
+            const randomPraise = praisePhrases[Math.floor(Math.random() * praisePhrases.length)];
+            speechBubble.textContent = randomPraise;
+
+            // Фанфари та салют
+            playVictoryFanfare();
+            launchFireworks();
+
+            // Розблокування кнопок
+            Object.keys(buttons).forEach(key => {
+                buttons[key].disabled = false;
+                buttons[key].classList.remove('active-btn');
+            });
+
+            // Повернення у спокійний стан через 4 секунди
+            setTimeout(() => {
+                if (!isRunning) {
+                    character.className = 'character idle-anim';
+                    timerText.textContent = '20';
+                    speechBubble.textContent = "Обирай наступну вправу! 🐻✨";
+                }
+            }, 4000);
+        }
+
+        /* --- СИСТЕМА САЛЮТІВ (CANVAS) --- */
+        const canvas = document.getElementById('fireworksCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 7 + 2;
+                this.vx = Math.cos(angle) * speed;
+                this.vy = Math.sin(angle) * speed;
+                this.alpha = 1;
+                this.decay = Math.random() * 0.02 + 0.015;
+                this.size = Math.random() * 5 + 3;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vy += 0.12; // гравітація
+                this.alpha -= this.decay;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        function createBurst(x, y) {
+            const colors = ['#FF6B6B', '#FFE66D', '#4ECDC4', '#FF9FF3', '#54A0FF', '#1DD1A1'];
+            for (let i = 0; i < 45; i++) {
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                particles.push(new Particle(x, y, color));
+            }
+        }
+
+        function launchFireworks() {
+            let bursts = 0;
+            const burstInterval = setInterval(() => {
+                const x = Math.random() * (canvas.width * 0.7) + canvas.width * 0.15;
+                const y = Math.random() * (canvas.height * 0.5) + canvas.height * 0.1;
+                createBurst(x, y);
+                bursts++;
+                if (bursts >= 6) clearInterval(burstInterval);
+            }, 350);
+        }
+
+        function animateFireworks() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].alpha <= 0) {
+                    particles.splice(i, 1);
+                }
+            }
+            requestAnimationFrame(animateFireworks);
+        }
+        animateFireworks();
+    </script>
+</body>
+</html>
